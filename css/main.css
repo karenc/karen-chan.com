@@ -1,0 +1,283 @@
+BODY {
+    margin: 0 0 50px 0;
+    border: 0;
+    border-top: 8px solid #8ce8ff;
+    font-family: sans-serif;
+    font-size: 15px;
+    color: white;
+    line-height: 25px;
+}
+BODY.green {
+    border-top: 8px solid #afff67;
+}
+A {
+    color: white;
+}
+H1 {
+    margin-top: 0;
+    font-size: 25px;
+}
+H2 {
+    margin: 25px 0 5px 0;
+    font-size: 20px;
+}
+UL {
+    margin-top: 0;
+}
+TABLE {
+    border: 0;
+    border-collapse: collapse;
+}
+
+.center {
+    margin: 0 auto;
+}
+.data-table TD, .data-table TH {
+    padding: 5px 15px;
+    border: 1px solid black;
+}
+.data-table.white TD, .data-table.white TH {
+    border: 1px solid white;
+}
+.verticle-headers TH {
+    text-align: right;
+}
+UL.no-list-style {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+.details {
+    margin: 15px 0;
+    line-height: 1.2em;
+}
+.shadow {
+    -moz-box-shadow: 3px 3px 5px 6px #ccc;
+    -webkit-box-shadow: 3px 3px 5px 6px #ccc;
+    box-shadow: 3px 3px 5px 6px #ccc;
+}
+.green .shadow {
+    -moz-box-shadow: 3px 3px 5px 5px #ccc;
+    -webkit-box-shadow: 3px 3px 5px 5px #ccc;
+    box-shadow: 3px 3px 5px 5px #ccc;
+}
+.gallery IMG {
+    display: inline;
+    margin: 10px 20px 10px 0;
+    border: 5px solid black;
+}
+.error {
+    font-weight: bold;
+    color: #FFAAAA;
+}
+.neko {
+    background-image: url(/neko.png);
+    background-repeat: no-repeat;
+    background-position: bottom right;
+    min-height: 500px;
+}
+.monospace {
+    font-family: monospace;
+}
+
+#nav {
+    margin: 20px 0 10px 0;
+    color: #074858;
+}
+.green #nav, .green #nav A {
+    color: white;
+}
+.green #nav {
+    margin: 20px 0 0 0;
+    padding: 10px 0 10px 10px;
+    background-image: url(/nav-background.png);
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    text-align: center;
+}
+#nav A {
+    text-decoration: none;
+    color: #074858;
+    font-weight: bold;
+}
+#nav span {
+    margin: 0 10px;
+}
+#nav .home {
+    font-size: 25px;
+    margin-left: 0;
+}
+A.contact-me {
+    border-radius: 5px;
+    background-color: #dd0679;
+    padding: 5px 20px;
+    text-decoration: none;
+    font-weight: bold;
+}
+A.contact-me:hover {
+    background-color: #ff289b;
+}
+#nav A.contact-me {
+    color: white;
+}
+#main {
+    width: 950px;
+    margin: 0 auto;
+}
+#content {
+    background-color: #074858;
+    background-image: url(/blue.png);
+    background-repeat: no-repeat;
+    background-position: top left;
+    min-height: 500px;
+    color: white;
+    padding: 20px;
+    border-radius: 15px;
+}
+.green #content {
+    background-image: none;
+    background-color: #3f6d33;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+#guestbook {
+    font-size: 18px;
+}
+#guestbook FORM {
+    margin-bottom: 40px;
+}
+#guestbook LABEL {
+    display: block;
+    float: left;
+    width: 100px;
+    text-align: right;
+    padding-top: 12px;
+}
+#guestbook INPUT, #guestbook TEXTAREA {
+    margin: 15px 0 0 10px;
+    font-size: 18px;
+}
+#guestbook TH {
+    text-align: right;
+    padding: 3px 10px;
+}
+#guestbook .message {
+    padding: 15px;
+}
+#guestbook .message.even {
+    background-color: #afff67;
+}
+#guestbook .message.even TABLE {
+    color: black;
+}
+#guestbook .pagination {
+    text-align: center;
+}
+
+#profile {
+    margin-top: 15px;
+}
+#profile LI {
+    line-height: 1.4em;
+}
+#linkedin-profile {
+    margin: 10px 10px 10px 0;
+    padding-right: 20px;
+}
+#github-logo {
+    height: 40px;
+    background-color: white;
+    padding: 5px;
+    border-radius: 5px;
+}
+#mail-icon {
+    height: 52px;
+}
+
+#games IMG {
+    float: left;
+}
+#games .info {
+    float: left;
+    margin-left: 20px;
+    width: 80%;
+    padding-top: 10px;
+}
+#games A {
+    font-size: 120%;
+    margin-bottom: 15px;
+}
+#games LI {
+    margin-top: 20px;
+}
+
+#tools A {
+    font-size: 120%;
+}
+
+#links A {
+    font-size: 120%;
+}
+#links LI {
+    padding-bottom: 15px;
+}
+
+#contact {
+    padding-top: 15px;
+}
+#contact LABEL {
+    width: 140px;
+    display: block;
+    float: left;
+    text-align: right;
+    font-size: 120%;
+}
+#contact DIV {
+    margin: 5px;
+}
+#contact INPUT, TEXTAREA {
+    font-size: 120%;
+    margin-left: 20px;
+    width: 300px;
+}
+#categories {
+    text-align: center;
+    margin-bottom: 20px;
+}
+#categories SPAN {
+    margin: 0 10px;
+}
+#inner {
+    margin-left: 3%;
+}
+
+#slides LI {
+    margin-top: 20px;
+    font-size: 110%;
+}
+
+.left {
+    float: left;
+}
+.right {
+    float: right;
+}
+.clearfix:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
+.icons a {
+    margin-right: 20px;
+}
+.icons {
+    line-height: 1.5em;
+    margin-top: 30px;
+}

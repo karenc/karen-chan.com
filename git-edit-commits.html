@@ -1,0 +1,43 @@
+<html>
+    <head>
+        <title>karen-chan.com | Watch how to edit commits in Git</title>
+        <link rel="stylesheet" type="text/css" href="/css/main.css" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+        <script type="text/javascript" src="/js/jquery-1.8.1.min.js"></script>
+        <script type="text/javascript" src="/js/utils.js"></script>
+        <script src="/flowplayer/flowplayer-3.2.11.min.js"></script>
+    </head>
+    <body>
+        <div id="main">
+            <div id="nav">
+                <span class="home"><a href="/">karen chan</a></span>
+                <span><a href="/games.html">Games</a></span>
+                <span><a href="/tools.html">Tools</a></span>
+                <span><a href="/slides.html">Slides</a></span>
+                <span><a href="/links.html">Links</a></span>
+                <span><a class="contact-me" href="/contact.html">Contact Me</a></span>
+            </div>
+            <div id="content" class="shadow">
+                <div class="neko">
+                    <h1>Watch how to edit commits in Git</h1>
+                    <div id="inner">
+                        
+<p>At the beginning of this video, I have some uncommitted changes.  They include some new features and some fixes for previous commits.</p>
+<p>I have a fix for the turnover_declarations_helper.rb and I decided to rewrite initTurnoverUnitAndPeriodSelects in turnover_declaration.js to be a function.</p>
+<p>First, I run "git add -p app/helpers/turnover_declarations_helper.rb" to pick the bits for fixing previous commits and commit it.</p>
+<p>Then, I run "git add -p public/javascripts/controllers/turnover_declarations.js" to pick the bits for fixing previous commits and commit it.  (You can commit them in one commit as well, since they both fixes the same commit)</p>
+<p>After that, I run "git rebase -i qa" to reorder the commits, then mark my fix commits as "fixup"s.</p>
+<p>In case you rebase and then realize it is not what you want, have a look at "git reflog", it has the commit from before you start the rebase.  You can look at the commits using "git log db7f236" and do "git reset --hard db7f236" to get back to the point before you rebase.</p>
+<div>
+<a href="/git-edit-commits.mp4" style="display: block; margin-left: -3%;" id="player"></a>
+<script type="text/javascript">
+flowplayer('player', '/flowplayer/flowplayer-3.2.15.swf', {'clip': {autoPlay: false}});
+</script>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
