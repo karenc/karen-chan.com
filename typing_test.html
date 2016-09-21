@@ -1,0 +1,81 @@
+<html>
+	<head>
+		<title>Typing Test</title>
+		<style type="text/css">
+			body {
+				font-family : sans-serif;
+				margin-left : 10%;
+				margin-right : 10%;
+			}
+			h1 {
+				background-color : black;
+				color : white;
+				padding : 10px;
+				margin-bottom : 0px;
+			}
+			#main {
+				border : 1px solid black;
+				text-align : center;
+				padding : 10px;
+			}
+		</style>
+        <script type="text/javascript">
+
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-34774368-1']);
+          _gaq.push(['_setDomainName', 'karen-chan.com']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+
+        </script>
+	</head>
+	<body>
+		<h1>Typing Test</h1>
+		<div id="main">
+			<table border="0">
+				<tr>
+					<td width="50%">
+						With this typing test,
+						you can test your typing
+						speed and accuracy for
+						free online in your web
+						browser!  Just select the
+						passage you would like
+						to type and the amount
+						of time you would like
+						to test for and start
+						the test!
+					</td>
+					<td style="text-align : center;">
+						<form action="typing_test.cgi">
+							Choose a text to start typing:<br />
+							<select name="text">
+								<option value="great_expectation">Great Expectation</option>
+							</select><br /><br />
+							Length of test:<br />
+							<select name="length">
+								<option value="1">1 min</option>
+								<option value="2">2 min</option>
+								<option value="5">5 min</option>
+								<option value="10">10 min</option>
+								<option value="15">15 min</option>
+								<option value="20">20 min</option>
+							</select><br /><br />
+							<input type="submit" value="start test" />
+						</form>
+					</td>
+				</tr>
+			</table>
+			<font size="1">
+				Browser Requirements:<br />
+				Firefox with Javascript enabled<br />
+				<i>Written in <a href="http://www.vim.org/">VIM</a> for 
+				<a href="http://www.getfirefox.com/">Firefox</a></i>
+		</div>
+	</body>
+</html>
