@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<title>~/karen-chan.com/irssi/mail_message.pl.html</title>
+<meta name="Generator" content="Vim/7.3">
+<meta name="plugin-version" content="vim7.3_v10">
+<meta name="syntax" content="perl">
+<meta name="settings" content="use_css,pre_wrap,expand_tabs">
+<style type="text/css">
+<!--
+pre { white-space: pre-wrap; font-family: monospace; color: #ffffff; background-color: #000000; }
+body { font-family: monospace; color: #ffffff; background-color: #000000; }
+.Special { color: #ffcdcd; }
+.Identifier { color: #00ffff; font-weight: bold; }
+.Constant { color: #ff40ff; }
+.Statement { color: #ffff00; }
+-->
+</style>
+</head>
+<body>
+<pre>
+<span class="Statement">use strict</span>;
+<span class="Statement">use vars</span> <span class="Constant">qw(</span><span class="Constant">$VERSION %IRSSI</span><span class="Constant">)</span>;
+<span class="Statement">use </span>POSIX;
+
+<span class="Statement">use </span>Irssi;
+<span class="Identifier">$VERSION</span> = <span class="Constant">'</span><span class="Constant">0.0.3</span><span class="Constant">'</span>;
+<span class="Identifier">%IRSSI</span> = (
+    <span class="Constant">authors</span>     =&gt; <span class="Constant">'</span><span class="Constant">karen chan</span><span class="Constant">'</span>,
+    <span class="Constant">contact</span>     =&gt; <span class="Constant">'</span><span class="Constant">karen@karen-chan.com</span><span class="Constant">'</span>,
+    <span class="Constant">name</span>        =&gt; <span class="Constant">'</span><span class="Constant">mail_message</span><span class="Constant">'</span>,
+    <span class="Constant">description</span> =&gt; <span class="Constant">'</span><span class="Constant">Sends you an email when you get a message</span><span class="Constant">'</span>,
+    <span class="Constant">url</span>         =&gt; <span class="Constant">''</span>,
+    <span class="Constant">license</span>     =&gt; <span class="Constant">''</span>,
+    <span class="Constant">changed</span>     =&gt; <span class="Constant">''</span>,
+);
+
+<span class="Statement">my</span> <span class="Identifier">$my_email_address</span> = <span class="Constant">'</span><span class="Constant">karen@karen-chan.com</span><span class="Constant">'</span>;
+<span class="Statement">my</span> <span class="Identifier">$my_nick</span> = <span class="Constant">'</span><span class="Constant">karen</span><span class="Constant">'</span>;
+<span class="Statement">my</span> <span class="Identifier">%from_addresses</span> = (
+    <span class="Constant">'</span><span class="Constant">karen</span><span class="Constant">'</span> =&gt; <span class="Constant">'</span><span class="Constant">karen@karen-chan.com</span><span class="Constant">'</span>,
+    <span class="Constant">'</span><span class="Constant">example</span><span class="Constant">'</span> =&gt; <span class="Constant">'</span><span class="Constant">example@example.com</span><span class="Constant">'</span>,
+);
+
+<span class="Statement">my</span> <span class="Identifier">$cmd</span> = <span class="Constant">&quot;</span><span class="Constant">echo </span><span class="Special">\&quot;</span><span class="Constant">%s</span><span class="Special">\&quot;</span><span class="Constant"> | mail %s -s 'irc message' </span><span class="Identifier">$my_email_address</span><span class="Constant">&quot;</span>;
+
+<span class="Statement">sub </span><span class="Identifier">receive_message </span>{
+    <span class="Statement">my</span> (<span class="Identifier">$server</span>, <span class="Identifier">$msg</span>, <span class="Identifier">$nick</span>, <span class="Identifier">$address</span>, <span class="Identifier">$target</span>) = <span class="Identifier">@_</span>;
+    <span class="Statement">chomp</span>(<span class="Identifier">$msg</span>);
+
+    <span class="Statement">if</span> (!<span class="Identifier">$server</span><span class="Identifier">-&gt;{</span><span class="Constant">usermode_away</span><span class="Identifier">}</span>) {
+        <span class="Statement">return</span>;
+    }
+
+    <span class="Statement">if</span> (<span class="Identifier">$target</span> &amp;&amp; <span class="Identifier">$msg</span> !~ <span class="Statement">/</span><span class="Identifier">$my_nick</span><span class="Statement">/</span>) {
+        <span class="Statement">return</span>;
+    }
+
+    <span class="Statement">my</span> <span class="Identifier">$reply_to</span> = <span class="Constant">''</span>;
+    <span class="Statement">if</span> (<span class="Statement">exists</span> <span class="Identifier">$from_addresses{$nick}</span>) {
+        <span class="Identifier">$reply_to</span> = <span class="Constant">&quot;</span><span class="Constant">-a 'From: </span><span class="Identifier">$nick</span><span class="Constant"> &lt;</span><span class="Identifier">$from_addresses{$nick}</span><span class="Constant">&gt;'</span><span class="Constant">&quot;</span>;
+    }
+    <span class="Statement">if</span> (<span class="Identifier">$target</span>) {
+        <span class="Identifier">$msg</span> = <span class="Constant">&quot;</span><span class="Constant">&lt;</span><span class="Identifier">$nick</span><span class="Constant">, </span><span class="Identifier">$target</span><span class="Constant">&gt; </span><span class="Identifier">$msg</span><span class="Constant">&quot;</span>;
+    } <span class="Statement">else</span> {
+        <span class="Identifier">$msg</span> = <span class="Constant">&quot;</span><span class="Constant">&lt;</span><span class="Identifier">$nick</span><span class="Constant">&gt; </span><span class="Identifier">$msg</span><span class="Constant">&quot;</span>;
+    }
+    <span class="Identifier">$msg</span> =~ <span class="Statement">s/</span><span class="Constant">&quot;</span><span class="Statement">/</span><span class="Constant">&quot;'&quot;'&quot;</span><span class="Statement">/g</span>;
+    <span class="Statement">chomp</span>(<span class="Identifier">$msg</span>);
+    <span class="Statement">my</span> <span class="Identifier">$mail</span> = <span class="Statement">sprintf</span>(<span class="Identifier">$cmd</span>, <span class="Identifier">$msg</span>, <span class="Identifier">$reply_to</span>);
+    <span class="Statement">`</span><span class="Identifier">$mail</span><span class="Statement">`</span>;
+}
+
+Irssi::signal_add({
+        <span class="Constant">'</span><span class="Constant">message public</span><span class="Constant">'</span> =&gt; \<span class="Identifier">&amp;receive_message</span>,
+        <span class="Constant">'</span><span class="Constant">message private</span><span class="Constant">'</span> =&gt; \<span class="Identifier">&amp;receive_message</span>,
+    });
+</pre>
+</body>
+</html>

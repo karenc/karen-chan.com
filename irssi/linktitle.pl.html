@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<title>~/karen-chan.com/irssi/linktitle.pl.html</title>
+<meta name="Generator" content="Vim/7.3">
+<meta name="plugin-version" content="vim7.3_v10">
+<meta name="syntax" content="perl">
+<meta name="settings" content="use_css,pre_wrap,expand_tabs">
+<style type="text/css">
+<!--
+pre { white-space: pre-wrap; font-family: monospace; color: #ffffff; background-color: #000000; }
+body { font-family: monospace; color: #ffffff; background-color: #000000; }
+.Special { color: #ffcdcd; }
+.Identifier { color: #00ffff; font-weight: bold; }
+.Constant { color: #ff40ff; }
+.Statement { color: #ffff00; }
+-->
+</style>
+</head>
+<body>
+<pre>
+<span class="Statement">use lib</span> <span class="Constant">&quot;</span><span class="Constant">/home/karen/.irssi/scripts/libwww-perl-5.826/lib/</span><span class="Constant">&quot;</span>;
+<span class="Statement">use strict</span>;
+<span class="Statement">use vars</span> <span class="Constant">qw(</span><span class="Constant">$VERSION %IRSSI</span><span class="Constant">)</span>;
+<span class="Statement">use </span>POSIX;
+
+<span class="Statement">use </span>Irssi;
+<span class="Identifier">$VERSION</span> = <span class="Constant">'</span><span class="Constant">0.0.3</span><span class="Constant">'</span>;
+<span class="Identifier">%IRSSI</span> = (
+    <span class="Constant">authors</span>        =&gt; <span class="Constant">'</span><span class="Constant">karen chan</span><span class="Constant">'</span>,
+    <span class="Constant">contact</span>        =&gt; <span class="Constant">'</span><span class="Constant">karen@karen-chan.com</span><span class="Constant">'</span>,
+    <span class="Constant">name</span>           =&gt; <span class="Constant">'</span><span class="Constant">linktitle</span><span class="Constant">'</span>,
+    <span class="Constant">description</span>    =&gt; <span class="Constant">'</span><span class="Constant">priv msg the title of the urls</span><span class="Constant">'</span>,
+    <span class="Constant">url</span>            =&gt; <span class="Constant">''</span>,
+    <span class="Constant">license</span>        =&gt; <span class="Constant">''</span>,
+);
+
+<span class="Statement">my</span> <span class="Identifier">%pipe_tag</span> = ();
+
+<span class="Statement">sub </span><span class="Identifier">linktitle </span>{
+    <span class="Statement">my</span> (<span class="Identifier">$server</span>, <span class="Identifier">$msg</span>, <span class="Identifier">$nick</span>, <span class="Identifier">$address</span>, <span class="Identifier">$target</span>) = <span class="Identifier">@_</span>;
+    <span class="Statement">chomp</span>(<span class="Identifier">$msg</span>);
+
+    <span class="Statement">if</span> (<span class="Identifier">$msg</span> !~ <span class="Statement">/</span><span class="Special">(</span><span class="Constant">http</span><span class="Special">[^ ]*)</span><span class="Statement">/</span>) {
+        <span class="Statement">return</span>;
+    }
+    <span class="Statement">if</span> (<span class="Identifier">$nick</span> <span class="Statement">eq</span> <span class="Identifier">$server-&gt;{</span><span class="Constant">'</span><span class="Constant">nick</span><span class="Constant">'</span><span class="Identifier">}</span>) {
+        <span class="Statement">return</span>;
+    }
+
+    <span class="Statement">my</span> <span class="Identifier">$url</span> = <span class="Identifier">$1</span>;
+    <span class="Statement">my</span> (<span class="Identifier">$rh</span>, <span class="Identifier">$wh</span>);
+    <span class="Statement">pipe</span> <span class="Identifier">$rh</span>, <span class="Identifier">$wh</span>;
+    <span class="Statement">my</span> <span class="Identifier">$pid</span> = <span class="Statement">fork</span>();
+    <span class="Statement">unless</span> (<span class="Statement">defined</span> <span class="Identifier">$pid</span>) {
+        <span class="Statement">close</span>(<span class="Identifier">$rh</span>);
+        <span class="Statement">close</span>(<span class="Identifier">$wh</span>);
+        <span class="Statement">return</span>;
+    } <span class="Statement">elsif</span> (<span class="Identifier">$pid</span>) {
+        <span class="Statement">close</span>(<span class="Identifier">$wh</span>);
+        Irssi::pidwait_add(<span class="Identifier">$pid</span>);
+        <span class="Identifier">$pipe_tag{$rh}</span> = Irssi::input_add(<span class="Statement">fileno</span>(<span class="Identifier">$rh</span>), INPUT_READ, \<span class="Identifier">&amp;respond</span>, [<span class="Identifier">$server</span>, <span class="Identifier">$rh</span>]);
+        <span class="Statement">return</span>;
+    }
+    <span class="Statement">close</span>(<span class="Identifier">$rh</span>);
+    get_title(<span class="Identifier">$wh</span>, <span class="Identifier">$url</span>, <span class="Identifier">$server-&gt;{</span><span class="Constant">'</span><span class="Constant">nick</span><span class="Constant">'</span><span class="Identifier">}</span>, <span class="Identifier">$nick</span>, <span class="Identifier">$target</span>);
+    POSIX::_exit(<span class="Constant">1</span>);
+}
+
+<span class="Statement">sub </span><span class="Identifier">respond </span>{
+    <span class="Statement">my</span> (<span class="Identifier">$server</span>, <span class="Identifier">$readhandle</span>) = <span class="Identifier">@{@_[</span><span class="Constant">0</span><span class="Identifier">]}</span>;
+    <span class="Statement">my</span> <span class="Identifier">$line</span> = <span class="Constant">''</span>;
+    <span class="Identifier">$line</span> .= <span class="Identifier">$_</span> <span class="Statement">while</span> (&lt;<span class="Identifier">$readhandle</span>&gt;);
+    Irssi::<span class="Statement">print</span>(<span class="Identifier">$line</span>);
+    Irssi::input_remove(<span class="Identifier">$pipe_tag{$readhandle}</span>);
+    <span class="Statement">close</span>(<span class="Identifier">$readhandle</span>);
+}
+
+<span class="Statement">sub </span><span class="Identifier">get_title </span>{
+    <span class="Statement">my</span> (<span class="Identifier">$wh</span>, <span class="Identifier">$url</span>, <span class="Identifier">$my_nick</span>, <span class="Identifier">$nick</span>, <span class="Identifier">$target</span>) = <span class="Identifier">@_</span>;
+    <span class="Statement">use </span>LWP::UserAgent;
+    <span class="Statement">my</span> <span class="Identifier">$ua</span> = LWP::UserAgent-&gt;new;
+    <span class="Identifier">$ua</span><span class="Identifier">-&gt;agent</span>(<span class="Constant">'</span><span class="Constant">Mozilla/5.0 (X11; U; Linux i686; en-GB; rv:1.9.0.10) Gecko/2009042513 Ubuntu/8.04 (hardy) Firefox/3.0.10</span><span class="Constant">'</span>);
+    <span class="Statement">my</span> <span class="Identifier">$response</span> = <span class="Identifier">$ua</span><span class="Identifier">-&gt;get</span>(<span class="Identifier">$url</span>);
+    <span class="Statement">my</span> <span class="Identifier">$content</span> = <span class="Identifier">$response</span><span class="Identifier">-&gt;content</span>;
+    <span class="Statement">if</span> (<span class="Identifier">$content</span> =~ <span class="Statement">/</span><span class="Constant">&lt;title&gt;</span><span class="Special">([^&lt;]*)</span><span class="Constant">&lt;</span><span class="Special">\/</span><span class="Constant">title&gt;</span><span class="Statement">/i</span>) {;
+        <span class="Statement">my</span> <span class="Identifier">$title</span> = <span class="Identifier">$1</span>;
+        <span class="Statement">print</span> <span class="Identifier">$wh</span> <span class="Constant">&quot;</span><span class="Constant">&lt;</span><span class="Identifier">$nick</span><span class="Constant">&gt; </span><span class="Constant">&quot;</span> . <span class="Identifier">$response</span><span class="Identifier">-&gt;title</span> . <span class="Constant">&quot;</span><span class="Constant"> </span><span class="Identifier">$url</span><span class="Constant">&quot;</span>;
+    } <span class="Statement">else</span> {
+        <span class="Statement">print</span> <span class="Identifier">$wh</span> <span class="Constant">&quot;</span><span class="Constant">&lt;</span><span class="Identifier">$nick</span><span class="Constant">&gt; </span><span class="Constant">&quot;</span> . <span class="Identifier">$response</span><span class="Identifier">-&gt;base</span> . <span class="Constant">&quot;</span><span class="Constant"> </span><span class="Identifier">$url</span><span class="Constant">&quot;</span>;
+    }
+    <span class="Statement">close</span>(<span class="Identifier">$wh</span>);
+}
+
+Irssi::signal_add({
+        <span class="Constant">'</span><span class="Constant">message public</span><span class="Constant">'</span> =&gt; \<span class="Identifier">&amp;linktitle</span>,
+        <span class="Constant">'</span><span class="Constant">message private</span><span class="Constant">'</span> =&gt; \<span class="Identifier">&amp;linktitle</span>,
+    });
+</pre>
+</body>
+</html>
