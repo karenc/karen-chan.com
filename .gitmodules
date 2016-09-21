@@ -1,3 +1,6 @@
 [submodule "pulldown"]
 	path = pulldown
 	url = git@github.com:karenc/pulldown.git
+[submodule "haul"]
+	path = haul
+	url = git@github.com:karenc/haul.git
