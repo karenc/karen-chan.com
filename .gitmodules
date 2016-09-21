@@ -4,3 +4,6 @@
 [submodule "haul"]
 	path = haul
 	url = git@github.com:karenc/haul.git
+[submodule "color-grid"]
+	path = color-grid
+	url = git@github.com:karenc/color-grid.git
