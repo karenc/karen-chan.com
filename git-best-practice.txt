@@ -1,0 +1,96 @@
+Notes for "Git Best Practice: Commit History"
+
+Slide 3:
+
+(Readability) Whenever I get updates from the repo, I like to have a look at
+the commits.  There was this one time when I got 3 real commits and 6 merge
+commits...  but I really only want to see the 3 real commits.
+
+(Debugging) I'm not sure if everyone has tried "git bisect"?  It is definitely
+a useful command for debugging.
+
+From the man page: Find by binary search the change that introduced a bug.
+
+When you have specified one bad and one good version, the command bisects the
+revision tree and checks out the middle commit.  You have to test it and tell
+git whether the bug exists in this version, so git can continue to bisect.
+
+So... here's the problem, if you have some work in progress commits, maybe part
+of the site doesn't work or some tests fail.  It is definitely harder to decide
+whether that was a good or bad commit.
+
+(Remember why) I'm sure everyone has come across this one.  You're looking for
+why some code is written in a certain way, you use "git annotate" and you found
+a completely irrelevant commit message.  And sometimes it looks like those
+changes were accidentally committed.
+
+Slide 4:
+
+Here's an example of a good commit message.  There's a one line short summary
+of what the commit is about.  Then there should be a few paragraphs about the
+details.  There are lots of things you can include here once you start thinking
+about it.
+
+(Rely on commit message only) This is something that people may disagree.
+Sometimes TFS doesn't have all the technical details of a ticket, and so I
+think it is quite important to at least write them in the commit message.  To
+be honest though, if I don't have to check TFS at all, I'll be very happy.
+
+Slide 5:
+
+I really don't like it when you look at a commit, and then the change is
+reverted in the next commit.  Or part of it is reverted.  It's like you have to
+merge things in your head.
+
+I don't think you have to include all your failed attempts in the commit
+history, I think other people will just get confused by it.
+
+Slide 13:
+
+I have already sent these out in an email earlier this week, hopefully we won't
+be getting any more unintentional merge commits!
+
+Slide 18:
+
+The other difference between rebasing and merging is conflict resolution.  With
+"git merge", you resolve all your conflicts at once, in the merge commit.  With
+"git rebase", you resolve conflicts per commit.
+
+The conflicts from rebase should be easier to fix because the change and the
+conflicts are smaller.  I usually use "git commit --amend" to add the conflict
+resolution back into the original commit.  Since I'm the author of the original
+commit, there's no need to explicitly tell other people what I have done to
+resolve the conflicts.
+
+Slide 19:
+
+Everyone already knows this but if you have several branches to merge, please
+remember to run the tests after you finish merging and before pushing it to the
+repo.
+
+Slide 21:
+
+You can reorder the lines to reorder the commits.
+
+You can squash commits.
+
+You can insert command lines to execute between different commits, usually
+for running tests.
+
+Once in a while, rebase can go pretty badly.  Like you reorder some commits and
+then you get lots of conflicts in other commits.  Or when you realized that
+something you did didn't make sense.
+
+It's completely fine.  You can always abort a rebase.  You can find your old
+commits in "git reflog".  It's basically really safe as long as you commit your
+changes.
+
+Slide 22:
+
+A lot of the times, I work on a feature for a long time without committing.  So
+"git add -p" really helps divide the changes into reasonably sized commits
+instead of having to make a giant commit.
+
+What you have to be careful of though, is if you don't divide your changes
+properly, some of your commits may be broken.  So I recommend running the tests
+between commits.

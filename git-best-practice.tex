@@ -1,0 +1,349 @@
+\documentclass[landscape]{slides}
+
+%\usepackage[paperheight=21cm,paperwidth=36cm]{geometry}
+\usepackage{color}
+\usepackage{fullpage}
+\usepackage{pdfpages}
+\usepackage{hyperref}
+
+\begin{document}
+
+\begin{slide}
+\begin{center}
+\textbf{\huge Git Best Practice:}
+\end{center}
+\begin{center}
+\textbf{\huge Commit History}
+\end{center}
+\vspace{15mm}
+\begin{center}
+Karen Chan\\
+\vspace{10mm}
+December 2012
+\end{center}
+\end{slide}
+
+\begin{slide}
+\textbf{In this session we will talk about:}
+\begin{itemize}
+\item Why it is good to have a clean and linear history
+\vspace{-10mm}
+\item What is a good commit message
+\vspace{-10mm}
+\item What is a clean history
+\vspace{-10mm}
+\item How to read the git log graph
+\vspace{-10mm}
+\item How to avoid merge commits
+\vspace{-10mm}
+\item How to clean up your commits / rewrite history
+\end{itemize}
+\end{slide}
+
+\begin{slide}
+\textbf{Why is it good to have a clean and linear history}
+\begin{itemize}
+{\item So we can read and understand what has been changed just by reading git log,}
+\vspace{-10mm}
+{\item Makes it easier to debug which commit caused a bug,}
+\vspace{-10mm}
+{\item Makes it easier to rollback or cherry-pick changes}
+\vspace{-10mm}
+{\item With a good commit message we can remember why\\ something was changed}
+\end{itemize}
+\end{slide}
+
+\begin{slide}
+\textbf{What is a good commit message}\\
+\begin{verbatim}
+One sentence summary of what you did
+
+More details about what you have done, for example why this
+change exists, what you have deleted and why (which you can't
+put as a comment in the code)
+\end{verbatim}
+It is easier to rely on just git commit messages instead of tickets, so these
+commit messages are too brief:\\
+\vspace{-18mm}
+\begin{itemize}
+\item{\tt 12345 Add tests}
+\vspace{-10mm}
+\item{\tt 23456 Typo}
+\vspace{-10mm}
+\item{\tt 34567 Fixed bug}
+\end{itemize}
+In fact if you include everything, then the ticket number becomes much less
+important.
+\end{slide}
+
+\begin{slide}
+\textbf{What is (not) a clean history}
+\begin{enumerate}
+{\item {\tt Add comment validation for MADA submissions}}
+\vspace{-10mm}
+{\item {\tt Remove debug statements that were in the last commit}}
+\vspace{-10mm}
+{\item {\tt Fix typo}}
+\vspace{-10mm}
+{\item {\tt One of the tests failed, fixed it}}
+\vspace{-10mm}
+{\item {\tt Forgot to add the test files}}
+\end{enumerate}
+Do you really care about commits 2 - 5?\\
+Is it useful for you to see all the mistakes I have made?\\
+\end{slide}
+
+\begin{slide}
+\textbf{But I want to commit regularly...}\\
+\\
+Don't worry, git gives you the ability to commit whenever you want, but also to
+clean it up before you publish your changes.\\
+\\
+Git lets you rewrite history!
+\end{slide}
+
+\begin{slide}
+\textbf{A linear history}\\
+\\
+Just having clean commits isn't really enough, having lots of merges also make
+the history look crazy:\\
+\\
+\tt{git log --oneline --decorate --graph origin/production}
+\end{slide}
+
+\begin{slide}
+\textbf{Once upon a time, when history was linear}\\
+\\
+\tt{* \textcolor{yellow}{33784f7} Fixing the build (same packet...}\\
+\tt{* \textcolor{yellow}{624935a} Converting null amounts to zero when...}\\
+\tt{* \textcolor{yellow}{7c42fd7} Changing deployment recipes to use git}\\
+\tt{* \textcolor{yellow}{3592704} [Ed] added empty data folders}
+\end{slide}
+
+\begin{slide}
+\textbf{A simple merge that we can still understand}\\
+\\
+\tt{*   \textcolor{yellow}{bbbc5ef} Merge branch 'master' of svn.groupm.local...}\\
+\textcolor{blue}{\tt{|}}\textcolor{red}{\textbackslash}\\
+\tt{\textcolor{blue}{|} * \textcolor{yellow}{60763cb} Story \#198: CRUD pages ...}\\
+\tt{* \textcolor{red}{|} \textcolor{yellow}{afe2440} changing column to bigint}\\
+\tt{* \textcolor{red}{|} \textcolor{yellow}{7ae049f} Adding new table for duns...}\\
+\tt{* \textcolor{red}{|} \textcolor{yellow}{3c1047f} Renaming InvestigationService...}\\
+\textcolor{red}{\tt{|/}}\\
+\tt{* \textcolor{yellow}{6e04551} Finishing refactoring to add product type to...}\\
+\end{slide}
+
+\begin{slide}
+\textbf{Getting complicated now...}\\
+\\
+\tt{*   a4f2cfc (dev1/production) Merge branch `staging' into...}\\
+\tt{\textcolor{blue}{|}\textcolor{magenta}{\textbackslash}  }\\
+\tt{\textcolor{blue}{|} *   fdc899b Merge branch `ticket74722' into staging}\\
+\tt{\textcolor{blue}{|} \textcolor{cyan}{|}\textcolor{red}{\textbackslash}  }\\
+\tt{\textcolor{blue}{|} \textcolor{cyan}{|} * c4f26c6 74722 Remove region filter on MADA expected...}\\
+\tt{\textcolor{blue}{|} * \textcolor{red}{|}   cacdd8a Merge branch `ticket74328' into staging}\\
+\tt{\textcolor{blue}{|} \textcolor{red}{|}\textcolor{yellow}{\textbackslash} \textcolor{red}{\textbackslash}  }\\
+\tt{\textcolor{blue}{|} \textcolor{red}{|} \textcolor{yellow}{|}\textcolor{red}{/}  }\\
+\tt{\textcolor{blue}{|} \textcolor{red}{|/}\textcolor{yellow}{|}   }\\
+\tt{\textcolor{blue}{|} \textcolor{red}{|} * dba4d20 74328 Only do one duns investigation request...}\\
+\tt{* \textcolor{red}{|} \textcolor{yellow}{|}   75d6ff0 Merge branch `staging' into production}\\
+\end{slide}
+
+\begin{slide}
+\includepdf{git_log_graph.pdf}
+\end{slide}
+
+\begin{slide}
+\textbf{Merge commits}\\
+\\
+The more layers we have the more merge commits we have.  Usually merge commits
+are empty, and are not that useful to anyone.\\
+\\
+A few of them is fine, but when there are merge commits every 2 actual commits
+it is useless noise and is distracting.
+\end{slide}
+
+\begin{slide}
+\textbf{How to avoid merge commits when using git pull}\\
+\\
+\begin{itemize}
+\item{Do not use {\tt --no-ff} when merging\\
+({\tt [merge] ff = true} in .gitconfig)}
+\item{Use {\tt rebase} if you have changes on your branch\\
+({\tt [pull] rebase = true} in .gitconfig)}
+\item{Use {\tt git push origin HEAD} to push only the current branch\\
+({\tt [push] default = current} in .gitconfig)}
+\end{itemize}
+\end{slide}
+
+\begin{slide}
+\textbf{How to clean up your commits / rewrite history}\\
+\begin{itemize}
+\item{\tt{git commit --amend}}
+\vspace{-10mm}
+\item{\tt{git rebase}}
+\vspace{-10mm}
+\item{\tt{git rebase -i}}
+\vspace{-10mm}
+\item{\tt{git add -p}}
+\end{itemize}
+\end{slide}
+
+\begin{slide}
+\textbf{git commit {\tt--}amend}\\
+\\
+This lets you amend your last commit.\\
+This is one of the most useful commands in git.\\
+\\
+For example, you just committed, then you realized you\\ forgot to add a file:\\
+\\
+{\tt git add missing\_file}\\
+{\tt git commit --amend}\\
+\\
+There, you just added missing\_file to the last commit instead of doing a
+commit like ``Forgot to add missing\_file''
+\end{slide}
+
+\begin{slide}
+\textbf{git rebase (1)}\\
+\\
+Rebasing is really important to keep a linear history.\\
+\\
+For example, if I create a branch off {\tt qa}, then someone pushes one commit
+to {\tt qa}, then I commit to my branch, the commit history will look something
+like this:\\
+\\
+\tt{\textcolor{blue}{|} * \textcolor{yellow}{60763cb} My commit}\\
+\tt{* \textcolor{red}{|} \textcolor{yellow}{3c1047f} Commit 2}\\
+\textcolor{red}{\tt{|/}}\\
+\tt{* \textcolor{yellow}{6e04551} Commit 1}\\
+\end{slide}
+
+\begin{slide}
+\textbf{git rebase (2)}\\
+\\
+If you now merge into {\tt qa} instead of doing {\tt git rebase qa} first, the
+{\tt qa} history will be like this:\\
+\\
+\tt{*    Merge branch `my-branch'}\\
+\tt{\textcolor{blue}{|} \textcolor{red}{\textbackslash}}\\
+\tt{\textcolor{blue}{|} * \textcolor{yellow}{60763cb} My commit}\\
+\tt{* \textcolor{red}{|} \textcolor{yellow}{3c1047f} Commit 2}\\
+\textcolor{red}{\tt{|/}}\\
+\tt{* \textcolor{yellow}{6e04551} Commit 1}\\
+\end{slide}
+
+\begin{slide}
+\textbf{git rebase (3)}\\
+\\
+If you do git rebase qa, the qa history will be linear because you commit will
+go on top of the latest commit on qa:\\
+\\
+{\tt* \textcolor{yellow}{60763cb} My commit}\\
+\textcolor{red}{\tt{|}}\\
+{\tt* \textcolor{yellow}{3c1047f} Commit 2}\\
+{\tt* \textcolor{yellow}{6e04551} Commit 1}\\
+\\
+You have avoided a not very useful ``Merge my-branch into qa'' commit.\\
+\end{slide}
+
+\begin{slide}
+\textbf{git rebase (4)}\\
+\\
+What if I have a few branches that need to go back to qa, and I don't want to
+merge one then rebase the next one etc?\\
+\\
+{\tt git cherry-pick qa..second-branch}\\
+{\tt git cherry-pick qa..third-branch}\\
+\\
+Cherry-pick will take your changes and commit message and apply to the current
+branch ({\tt qa}), it won't remember what the parent of the commit is.\\
+\\
+Which means qa is going to have a linear history.
+\end{slide}
+
+\begin{slide}
+\textbf{git rebase {\tt-}i (1)}\\
+\\
+This can be used to edit commit messages, reorder commits, execute tests in
+between commits etc.\\
+Basically this is {\it THE} command to use for cleaning up history.\\
+\\
+It is usually run like this: {\tt git rebase -i origin/qa}\\
+\\
+Your text editor will show something like this:\\
+\end{slide}
+
+\begin{slide}
+\textbf{git rebase {\tt-}i (2)}\\
+\\
+\textcolor{yellow}{pick} \textcolor{cyan}{a2b1945} \textcolor{magenta}{59860 Add turnover submitter and...}\\
+\textcolor{yellow}{pick} \textcolor{cyan}{795730e} \textcolor{magenta}{59862 Create Turnover Declarations...}\\
+\textcolor{yellow}{pick} \textcolor{cyan}{b52827a} \textcolor{magenta}{59862 Add tests for...}\\
+\vspace{-15mm}
+\begin{verbatim}
+# Rebase e7af698..731c2cc onto e7af698
+#          
+# Commands:            
+#  p, pick = use commit                               
+#  r, reword = use commit, but edit the commit message
+#  e, edit = use commit, but stop for amending          
+#  s, squash = use commit, but meld into previous commit          
+#  f, fixup = like "squash", but discard this commit's log message
+#  x, exec = run command (the rest of the line) using shell
+\end{verbatim}
+
+The top commit will be the first to apply, all the way down to the last.
+\end{slide}
+
+\begin{slide}
+\textbf{git add {\tt-}p}\\
+\\
+This is very useful for splitting up your change into different commits.\\
+\\
+{\tt git add -p README.txt}\\
+\\
+Allows you to edit the diff and lets you stage a subset of the changes you have
+made.\\
+\\
+{\tt git diff --cached}\\
+{\tt git commit} (no {\tt -a})\\
+\\
+This lets you commit what you have chosen and leave other changes for another
+commit later.
+\end{slide}
+
+\begin{slide}
+\textbf{A note on rewriting commit history}\\
+\\
+This should obviously only be done on your private local\\ development branch.\\
+\\
+Changing what is already on {\tt origin/qa} for example, is not\\ really ok.\\
+\\
+In fact, git usually gives you a warning when you do {\tt git push}:\\
+\vspace{-15mm}
+\begin{verbatim}
+To ssh://risk@scm/home/risk/repositories/riskplatform.git
+ ! [rejected]        HEAD -> qa (non-fast-forward)
+error: failed to push some refs to `ssh://risk@scm/home/risk/...'
+\end{verbatim}
+\end{slide}
+
+\begin{slide}
+\textbf{Links}\\
+\\
+\\
+These articles have more about git rebase, merge and commit message:
+\vspace{-8mm}
+\begin{itemize}
+\item {\small \url{http://sandofsky.com/blog/git-workflow.html}}
+\vspace{-10mm}
+\item {\small \url{http://randyfay.com/content/rebase-workflow-git}}
+\vspace{-10mm}
+\item {\small \url{http://darwinweb.net/articles/the-case-for-git-rebase}}
+\vspace{-10mm}
+\item {\small \url{http://www.reviewboard.org/docs/codebase/dev/git/clean-commits/}}
+\end{itemize}
+\end{slide}
+
+\end{document}
